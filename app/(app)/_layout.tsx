@@ -1,34 +1,19 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { useEffect, useState } from "react";
-import { UserProvider } from "../../lib/context/user";
+import { useEffect } from "react";
+import { useUser } from "../../lib/context/user-provider";
 import { Redirect, SplashScreen, Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { ProfileProvider } from "../../lib/context/profile-provider";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function AppLayout() {
-  const [user, setUser] = useState<
-    | {
-        loaded: true;
-        data: FirebaseAuthTypes.User | null;
-      }
-    | {
-        loaded: false;
-      }
-  >({
-    loaded: false,
-  });
+  const { user } = useUser();
 
   useEffect(() => {
-    return auth().onAuthStateChanged(user => {
-      setUser({
-        loaded: true,
-        data: user,
-      });
-
+    if (user.loaded) {
       SplashScreen.hideAsync();
-    });
-  }, []);
+    }
+  }, [user]);
 
   if (!user.loaded) {
     return null;
@@ -36,7 +21,7 @@ export default function AppLayout() {
 
   if (user.data !== null) {
     return (
-      <UserProvider value={user.data}>
+      <ProfileProvider user={user.data}>
         <Tabs>
           <Tabs.Screen
             name="index"
@@ -65,7 +50,7 @@ export default function AppLayout() {
             }}
           />
         </Tabs>
-      </UserProvider>
+      </ProfileProvider>
     );
   } else {
     return <Redirect href="/auth" />;

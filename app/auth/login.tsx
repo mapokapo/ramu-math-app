@@ -7,12 +7,16 @@ import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import firestore from "@react-native-firebase/firestore";
+import { useRouter } from "expo-router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -41,11 +45,25 @@ export default function Login() {
           return;
         }
 
-        const { idToken } = response.data;
+        const { idToken, user } = response.data;
 
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
         await auth().signInWithCredential(googleCredential);
+
+        const userProfileExists = (
+          await firestore().collection("profiles").doc(user.id).get()
+        ).exists;
+
+        if (!userProfileExists) {
+          router.push({
+            pathname: "/auth/create-profile",
+            params: {
+              name: user.name,
+              email: user.email,
+            },
+          });
+        }
       }
     } catch (error) {
       console.error(error);
@@ -70,7 +88,23 @@ export default function Login() {
     setErrorMessage(null);
 
     try {
-      await auth().signInWithEmailAndPassword(email, password);
+      const credential = await auth().signInWithEmailAndPassword(
+        email,
+        password
+      );
+
+      const userProfileExists = (
+        await firestore().collection("profiles").doc(credential.user.uid).get()
+      ).exists;
+
+      if (!userProfileExists) {
+        router.push({
+          pathname: "/auth/create-profile",
+          params: {
+            email,
+          },
+        });
+      }
     } catch (error) {
       console.error(error);
 
