@@ -1,28 +1,37 @@
 import { commonStyles } from "../../lib/config/commonStyles";
 import { TextInput, View } from "react-native";
 import { useState } from "react";
-import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import { mapError } from "../../lib/util/mapError";
 import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
+import { useAppUser } from "../../lib/context/user-provider";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useTheme } from "../../lib/hooks/theme";
 
-export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function CreateProfile() {
+  const user = useAppUser();
+
+  const [email, setEmail] = useState(user.email ?? "");
+  const [name, setName] = useState(user.displayName ?? "");
+  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
   const theme = useTheme();
 
-  const handleRegister = async () => {
+  const handleCreateProfile = async () => {
     if (loading) {
       return;
     }
 
-    if (email.trim().length === 0 || password.trim().length === 0) {
-      setErrorMessage("Email and password are required.");
+    if (
+      email.trim().length === 0 ||
+      name.trim().length === 0 ||
+      dateOfBirth === null
+    ) {
+      setErrorMessage("All fields are required.");
       return;
     }
 
@@ -30,7 +39,11 @@ export default function Register() {
     setErrorMessage(null);
 
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      await firestore().collection("profiles").doc(user.uid).set({
+        name,
+        email,
+        dateOfBirth,
+      });
     } catch (error) {
       console.error(error);
 
@@ -40,6 +53,19 @@ export default function Register() {
     }
 
     setLoading(false);
+  };
+
+  const handlePickDateOfBirth = () => {
+    DateTimePickerAndroid.open({
+      value: dateOfBirth ?? new Date(),
+      mode: "date",
+      onChange: (event, selectedDate) => {
+        if (event.type === "set" && selectedDate) {
+          setDateOfBirth(selectedDate);
+        }
+      },
+      is24Hour: true,
+    });
   };
 
   return (
@@ -56,16 +82,21 @@ export default function Register() {
       />
       <TextInput
         style={commonStyles.textInput}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        returnKeyType="go"
-        textContentType="newPassword"
-        secureTextEntry
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+        autoCapitalize="words"
+        returnKeyType="next"
+        textContentType="name"
       />
       <ThemedButton
-        title="Register"
-        onPress={handleRegister}
+        title="Pick date of birth"
+        onPress={handlePickDateOfBirth}
+        disabled={loading}
+      />
+      <ThemedButton
+        title="Create profile"
+        onPress={handleCreateProfile}
         disabled={loading}
       />
       <View>

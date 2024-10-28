@@ -17,6 +17,11 @@ export const commonStyles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
   },
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 8,
+    textAlign: "center",
+  },
   button: {
     borderRadius: 5,
     padding: 10,
@@ -26,10 +31,6 @@ export const commonStyles = StyleSheet.create({
     borderColor: "#000000",
     borderRadius: 5,
     padding: 10,
-  },
-  errorText: {
-    color: "#FF0000",
-    textAlign: "center",
   },
   horizontalRule: {
     width: "100%",

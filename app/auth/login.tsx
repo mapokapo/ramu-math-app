@@ -7,12 +7,15 @@ import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useTheme } from "../../lib/hooks/theme";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
+  const theme = useTheme();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -125,7 +128,11 @@ export default function Login() {
         />
         <View>
           {errorMessage && (
-            <ThemedText style={commonStyles.errorText}>
+            <ThemedText
+              style={{
+                color: theme.colors.error,
+                textAlign: "center",
+              }}>
               {errorMessage}
             </ThemedText>
           )}
