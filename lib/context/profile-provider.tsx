@@ -4,6 +4,7 @@ import React, {
   PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
@@ -70,10 +71,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
       });
   }, [user]);
 
-  const value = {
-    profile,
-    setProfile,
-  };
+  const value = useMemo(() => ({ profile, setProfile }), [profile, setProfile]);
 
   return (
     <ProfileProviderContext.Provider value={value}>

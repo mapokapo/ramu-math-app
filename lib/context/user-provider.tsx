@@ -4,6 +4,7 @@ import React, {
   PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import AsyncValue from "../types/AsyncValue";
@@ -40,10 +41,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     });
   }, []);
 
-  const value = {
-    user,
-    setUser,
-  };
+  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   return (
     <UserProviderContext.Provider value={value}>

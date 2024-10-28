@@ -7,8 +7,7 @@ import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import firestore from "@react-native-firebase/firestore";
-import { useRouter } from "expo-router";
+import { useTheme } from "../../lib/hooks/theme";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +15,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
-  const router = useRouter();
+  const theme = useTheme();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -45,25 +44,11 @@ export default function Login() {
           return;
         }
 
-        const { idToken, user } = response.data;
+        const { idToken } = response.data;
 
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
         await auth().signInWithCredential(googleCredential);
-
-        const userProfileExists = (
-          await firestore().collection("profiles").doc(user.id).get()
-        ).exists;
-
-        if (!userProfileExists) {
-          router.push({
-            pathname: "/auth/create-profile",
-            params: {
-              name: user.name,
-              email: user.email,
-            },
-          });
-        }
       }
     } catch (error) {
       console.error(error);
@@ -88,23 +73,7 @@ export default function Login() {
     setErrorMessage(null);
 
     try {
-      const credential = await auth().signInWithEmailAndPassword(
-        email,
-        password
-      );
-
-      const userProfileExists = (
-        await firestore().collection("profiles").doc(credential.user.uid).get()
-      ).exists;
-
-      if (!userProfileExists) {
-        router.push({
-          pathname: "/auth/create-profile",
-          params: {
-            email,
-          },
-        });
-      }
+      await auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
       console.error(error);
 
@@ -159,7 +128,11 @@ export default function Login() {
         />
         <View>
           {errorMessage && (
-            <ThemedText style={commonStyles.errorText}>
+            <ThemedText
+              style={{
+                color: theme.colors.error,
+                textAlign: "center",
+              }}>
               {errorMessage}
             </ThemedText>
           )}

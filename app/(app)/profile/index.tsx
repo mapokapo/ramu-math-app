@@ -1,26 +1,33 @@
-import { FlatList, Image, View } from "react-native";
-import ThemedText from "../../components/themed-text";
-import ThemedView from "../../components/themed-view";
-import { commonStyles } from "../../lib/config/commonStyles";
-import { camelCaseToWords } from "../../lib/util/camelCaseToWords";
-import ThemedButton from "../../components/themed-button";
-import auth from "@react-native-firebase/auth";
-import * as Clipboard from "expo-clipboard";
 import { toast } from "burnt";
 import { formatRelative } from "date-fns";
-import { useAppProfile } from "../../lib/context/profile-provider";
-import { useAppUser } from "../../lib/context/user-provider";
+import { useRouter } from "expo-router";
+import { View, FlatList, Image } from "react-native";
+import ThemedButton from "../../../components/themed-button";
+import ThemedText from "../../../components/themed-text";
+import ThemedView from "../../../components/themed-view";
+import { commonStyles } from "../../../lib/config/commonStyles";
+import { useAppProfile } from "../../../lib/context/profile-provider";
+import { useAppUser } from "../../../lib/context/user-provider";
+import { useTheme } from "../../../lib/hooks/theme";
+import { camelCaseToWords } from "../../../lib/util/camelCaseToWords";
+import auth from "@react-native-firebase/auth";
+import Clipboard from "expo-clipboard";
 
 export default function Profile() {
   const user = useAppUser();
   const profile = useAppProfile();
+  const theme = useTheme();
+  const router = useRouter();
 
   return (
     <ThemedView style={commonStyles.container}>
       {!profile.loaded ? (
         <ThemedText>Loading...</ThemedText>
       ) : (
-        <View>
+        <View
+          style={{
+            gap: 8,
+          }}>
           <View
             style={{
               alignItems: "center",
@@ -83,6 +90,13 @@ export default function Profile() {
           <ThemedButton
             title="Log out"
             onPress={() => auth().signOut()}
+          />
+          <ThemedButton
+            title="Delete account"
+            onPress={() => router.push("/profile/delete-account")}
+            style={{
+              backgroundColor: theme.colors.error,
+            }}
           />
         </View>
       )}

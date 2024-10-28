@@ -6,23 +6,20 @@ import { mapError } from "../../lib/util/mapError";
 import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
-import { useLocalSearchParams } from "expo-router";
 import { useAppUser } from "../../lib/context/user-provider";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { useTheme } from "../../lib/hooks/theme";
 
 export default function CreateProfile() {
   const user = useAppUser();
 
-  const searchParams = useLocalSearchParams<{
-    name?: string;
-    email?: string;
-  }>();
-
-  const [email, setEmail] = useState(searchParams.email ?? "");
-  const [name, setName] = useState(searchParams.name ?? "");
+  const [email, setEmail] = useState(user.email ?? "");
+  const [name, setName] = useState(user.displayName ?? "");
   const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
+  const theme = useTheme();
 
   const handleCreateProfile = async () => {
     if (loading) {
@@ -104,7 +101,13 @@ export default function CreateProfile() {
       />
       <View>
         {errorMessage && (
-          <ThemedText style={commonStyles.errorText}>{errorMessage}</ThemedText>
+          <ThemedText
+            style={{
+              color: theme.colors.error,
+              textAlign: "center",
+            }}>
+            {errorMessage}
+          </ThemedText>
         )}
       </View>
     </ThemedView>

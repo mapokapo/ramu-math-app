@@ -6,12 +6,15 @@ import { mapError } from "../../lib/util/mapError";
 import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
+import { useTheme } from "../../lib/hooks/theme";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
+  const theme = useTheme();
 
   const handleRegister = async () => {
     if (loading) {
@@ -67,7 +70,13 @@ export default function Register() {
       />
       <View>
         {errorMessage && (
-          <ThemedText style={commonStyles.errorText}>{errorMessage}</ThemedText>
+          <ThemedText
+            style={{
+              color: theme.colors.error,
+              textAlign: "center",
+            }}>
+            {errorMessage}
+          </ThemedText>
         )}
       </View>
     </ThemedView>

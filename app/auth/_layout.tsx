@@ -19,7 +19,7 @@ export default function AuthLayout() {
   }
 
   if (user.data !== null) {
-    return <Redirect href="/(app)" />;
+    return <Redirect href="/" />;
   } else {
     return (
       <Tabs>
@@ -49,19 +49,6 @@ export default function AuthLayout() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons
                 name="person-add"
-                color={color}
-                size={size}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="create-profile"
-          options={{
-            title: "Create profile",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name="person"
                 color={color}
                 size={size}
               />
