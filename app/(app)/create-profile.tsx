@@ -7,8 +7,8 @@ import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
 import { useAppUser } from "../../lib/context/user-provider";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useTheme } from "../../lib/hooks/theme";
+import DatePickerButton from "../../components/date-picker-button";
 
 export default function CreateProfile() {
   const user = useAppUser();
@@ -55,19 +55,6 @@ export default function CreateProfile() {
     setLoading(false);
   };
 
-  const handlePickDateOfBirth = () => {
-    DateTimePickerAndroid.open({
-      value: dateOfBirth ?? new Date(),
-      mode: "date",
-      onChange: (event, selectedDate) => {
-        if (event.type === "set" && selectedDate) {
-          setDateOfBirth(selectedDate);
-        }
-      },
-      is24Hour: true,
-    });
-  };
-
   return (
     <ThemedView style={commonStyles.container}>
       <TextInput
@@ -89,9 +76,9 @@ export default function CreateProfile() {
         returnKeyType="next"
         textContentType="name"
       />
-      <ThemedButton
+      <DatePickerButton
         title="Pick date of birth"
-        onPress={handlePickDateOfBirth}
+        onDateChange={setDateOfBirth}
         disabled={loading}
       />
       <ThemedButton

@@ -1,15 +1,17 @@
 import {
-  Pressable,
-  PressableProps,
   StyleProp,
   Text,
+  TextStyle,
+  TouchableOpacity,
+  TouchableOpacityProps,
   ViewStyle,
 } from "react-native";
 import { useTheme } from "../lib/hooks/theme";
 import { commonStyles } from "../lib/config/commonStyles";
 
-type Props = Omit<PressableProps, "style"> & {
+type Props = Omit<TouchableOpacityProps, "style"> & {
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 } & {
   title: string;
 };
@@ -18,7 +20,7 @@ export default function ThemedButton(props: Props) {
   const theme = useTheme();
 
   return (
-    <Pressable
+    <TouchableOpacity
       {...props}
       style={[
         commonStyles.button,
@@ -29,12 +31,15 @@ export default function ThemedButton(props: Props) {
         props.style,
       ]}>
       <Text
-        style={{
-          color: theme.colors.primaryText,
-          fontSize: 16,
-        }}>
+        style={[
+          {
+            color: theme.colors.primaryText,
+            fontSize: 16,
+          },
+          props.textStyle,
+        ]}>
         {props.title}
       </Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
