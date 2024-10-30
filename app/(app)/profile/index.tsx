@@ -11,7 +11,7 @@ import { useAppUser } from "../../../lib/context/user-provider";
 import { useTheme } from "../../../lib/hooks/theme";
 import { camelCaseToWords } from "../../../lib/util/camelCaseToWords";
 import auth from "@react-native-firebase/auth";
-import Clipboard from "expo-clipboard";
+import * as Clipboard from "expo-clipboard";
 
 export default function Profile() {
   const user = useAppUser();
