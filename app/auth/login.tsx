@@ -1,13 +1,13 @@
 import { commonStyles } from "../../lib/config/commonStyles";
 import { TextInput, View } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { mapError } from "../../lib/util/mapError";
 import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useTheme } from "../../lib/hooks/theme";
+import { authProviders } from "../../lib/config/authProviders";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,39 +17,32 @@ export default function Login() {
 
   const theme = useTheme();
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        "569974629006-3ghe2ckpvrtibn9kieprhs7eqi7k9vkh.apps.googleusercontent.com",
-    });
-  }, []);
-
-  const handleSocialLogin = async (socialType: "google") => {
+  const handleSocialLogin = async (provider: string) => {
     if (loading) {
       return;
     }
-
-    await GoogleSignin.hasPlayServices();
 
     setLoading(true);
     setErrorMessage(null);
 
     try {
-      if (socialType === "google") {
-        const response = await GoogleSignin.signIn();
+      const authProvider = authProviders[provider];
 
-        if (response.type === "cancelled") {
-          setLoading(false);
-          setErrorMessage("Google sign-in cancelled.");
-          return;
-        }
-
-        const { idToken } = response.data;
-
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-        await auth().signInWithCredential(googleCredential);
+      if (!authProvider) {
+        setErrorMessage("Provider not supported.");
+        setLoading(false);
+        return;
       }
+
+      const credential = await authProvider();
+
+      if (!credential) {
+        setErrorMessage("Sign in cancelled.");
+        setLoading(false);
+        return;
+      }
+
+      await auth().signInWithCredential(credential);
     } catch (error) {
       console.error(error);
 
@@ -90,7 +83,7 @@ export default function Login() {
       <View>
         <ThemedButton
           title="Log in with Google"
-          onPress={() => handleSocialLogin("google")}
+          onPress={() => handleSocialLogin("google.com")}
           disabled={loading}
         />
       </View>

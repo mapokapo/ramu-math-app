@@ -9,7 +9,7 @@ import { useState } from "react";
 import ThemedButton from "../../../components/themed-button";
 import { useTheme } from "../../../lib/hooks/theme";
 import { mapError } from "../../../lib/util/mapError";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { authProviders } from "../../../lib/config/authProviders";
 
 export default function DeleteAccount() {
   const [email, setEmail] = useState("");
@@ -28,25 +28,23 @@ export default function DeleteAccount() {
     setErrorMessage(null);
 
     try {
-      if (provider === "google.com") {
-        const response = await GoogleSignin.signIn();
+      const authProvider = authProviders[provider];
 
-        if (response.type === "cancelled") {
-          setLoading(false);
-          setErrorMessage("Google sign-in cancelled.");
-          return;
-        }
-
-        const { idToken } = response.data;
-
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-        await user.reauthenticateWithCredential(googleCredential);
-      } else {
+      if (!authProvider) {
         setErrorMessage("Provider not supported.");
         setLoading(false);
         return;
       }
+
+      const credential = await authProvider();
+
+      if (!credential) {
+        setErrorMessage("Sign in cancelled.");
+        setLoading(false);
+        return;
+      }
+
+      await user.reauthenticateWithCredential(credential);
 
       await firestore().collection("profiles").doc(user.uid).delete();
       await user.delete();
