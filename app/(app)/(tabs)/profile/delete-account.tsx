@@ -1,15 +1,15 @@
-import { useAppUser } from "../../../../../lib/context/user-provider";
+import { useAppUser } from "../../../../lib/context/user-provider";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import ThemedView from "../../../../../components/themed-view";
-import ThemedText from "../../../../../components/themed-text";
-import { commonStyles } from "../../../../../lib/config/common-styles";
+import ThemedView from "../../../../components/themed-view";
+import ThemedText from "../../../../components/themed-text";
+import { commonStyles } from "../../../../lib/config/common-styles";
 import { TextInput, View } from "react-native";
 import { useState } from "react";
-import ThemedButton from "../../../../../components/themed-button";
-import { useTheme } from "../../../../../lib/hooks/theme";
-import { mapError } from "../../../../../lib/util/map-error";
-import { authProviders } from "../../../../../lib/config/auth-providers";
+import ThemedButton from "../../../../components/themed-button";
+import { useTheme } from "../../../../lib/hooks/theme";
+import { mapError } from "../../../../lib/util/map-error";
+import { authProviders } from "../../../../lib/config/auth-providers";
 
 export default function DeleteAccount() {
   const [email, setEmail] = useState("");
