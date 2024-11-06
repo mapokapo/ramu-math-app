@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useUser } from "../../lib/context/user-provider";
-import { Redirect, SplashScreen, Tabs, usePathname } from "expo-router";
+import { Redirect, Slot, SplashScreen, usePathname } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   ProfileProvider,
@@ -27,7 +27,7 @@ export default function AppLayout() {
   if (user.data !== null) {
     return (
       <ProfileProvider user={user.data}>
-        <TabsLayout />
+        <ProfileLoader />
       </ProfileProvider>
     );
   } else {
@@ -35,7 +35,7 @@ export default function AppLayout() {
   }
 }
 
-function TabsLayout() {
+function ProfileLoader() {
   const { profile } = useProfile();
   const pathname = usePathname();
 
@@ -57,42 +57,5 @@ function TabsLayout() {
     return <Redirect href="/" />;
   }
 
-  return (
-    <Tabs initialRouteName="index">
-      <Tabs.Screen
-        name="create-profile"
-        options={{
-          href: null,
-          title: "Create Profile",
-          tabBarStyle: { display: "none" },
-        }}
-      />
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="home"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="person"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+  return <Slot />;
 }
