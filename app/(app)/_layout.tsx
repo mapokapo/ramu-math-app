@@ -7,7 +7,7 @@ import {
   useProfile,
 } from "../../lib/context/profile-provider";
 import { View } from "react-native";
-import { commonStyles } from "../../lib/config/commonStyles";
+import { commonStyles } from "../../lib/config/common-styles";
 
 SplashScreen.preventAutoHideAsync();
 

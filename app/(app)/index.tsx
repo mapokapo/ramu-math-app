@@ -1,7 +1,7 @@
 import ThemedButton from "../../components/themed-button";
 import ThemedText from "../../components/themed-text";
 import ThemedView from "../../components/themed-view";
-import { commonStyles } from "../../lib/config/commonStyles";
+import { commonStyles } from "../../lib/config/common-styles";
 import { useAppUser } from "../../lib/context/user-provider";
 import auth from "@react-native-firebase/auth";
 import { useTheme } from "../../lib/hooks/theme";

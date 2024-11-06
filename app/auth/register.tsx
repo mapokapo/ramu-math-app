@@ -1,8 +1,8 @@
-import { commonStyles } from "../../lib/config/commonStyles";
+import { commonStyles } from "../../lib/config/common-styles";
 import { TextInput, View } from "react-native";
 import { useState } from "react";
 import auth from "@react-native-firebase/auth";
-import { mapError } from "../../lib/util/mapError";
+import { mapError } from "../../lib/util/map-error";
 import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";

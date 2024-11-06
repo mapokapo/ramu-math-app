@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { useTheme } from "../lib/hooks/theme";
-import { commonStyles } from "../lib/config/commonStyles";
+import { commonStyles } from "../lib/config/common-styles";
 
 type Props = Omit<TouchableOpacityProps, "style"> & {
   style?: StyleProp<ViewStyle>;
