@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useUser } from "../../lib/context/user-provider";
-import { Redirect, Slot, SplashScreen, usePathname } from "expo-router";
+import { Redirect, SplashScreen, Stack, usePathname } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   ProfileProvider,
@@ -57,5 +57,15 @@ function ProfileLoader() {
     return <Redirect href="/" />;
   }
 
-  return <Slot />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="create-profile"
+        options={{
+          headerShown: true,
+          title: "Create Profile",
+        }}
+      />
+    </Stack>
+  );
 }

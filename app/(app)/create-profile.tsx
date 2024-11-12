@@ -1,14 +1,14 @@
-import { commonStyles } from "../../../lib/config/common-styles";
+import { commonStyles } from "../../lib/config/common-styles";
 import { TextInput, View } from "react-native";
 import { useState } from "react";
 import firestore from "@react-native-firebase/firestore";
-import { mapError } from "../../../lib/util/map-error";
-import ThemedButton from "../../../components/themed-button";
-import ThemedView from "../../../components/themed-view";
-import ThemedText from "../../../components/themed-text";
-import { useAppUser } from "../../../lib/context/user-provider";
-import { useTheme } from "../../../lib/hooks/theme";
-import DatePickerButton from "../../../components/date-picker-button";
+import { useAppUser } from "../../lib/context/user-provider";
+import DatePickerButton from "../../components/date-picker-button";
+import ThemedButton from "../../components/themed-button";
+import ThemedText from "../../components/themed-text";
+import ThemedView from "../../components/themed-view";
+import { useTheme } from "../../lib/hooks/theme";
+import { mapError } from "../../lib/util/map-error";
 
 export default function CreateProfile() {
   const user = useAppUser();
@@ -78,6 +78,7 @@ export default function CreateProfile() {
       />
       <DatePickerButton
         title="Pick date of birth"
+        value={dateOfBirth}
         onDateChange={setDateOfBirth}
         disabled={loading}
       />

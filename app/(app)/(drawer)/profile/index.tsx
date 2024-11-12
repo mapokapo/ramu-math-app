@@ -1,5 +1,5 @@
 import { toast } from "burnt";
-import { formatRelative } from "date-fns";
+import { format, formatRelative } from "date-fns";
 import { useRouter } from "expo-router";
 import { View, FlatList, Image } from "react-native";
 import ThemedButton from "../../../../components/themed-button";
@@ -71,6 +71,7 @@ export default function Profile() {
           <FlatList
             data={[
               { key: "Email", value: profile.data.email },
+              { key: "Date of birth", value: profile.data.dateOfBirth },
               { key: "Phone number", value: user.phoneNumber },
             ]}
             renderItem={({ item }) =>
@@ -82,7 +83,11 @@ export default function Profile() {
                     paddingVertical: 8,
                   }}>
                   <ThemedText>{camelCaseToWords(item.key)}</ThemedText>
-                  <ThemedText>{item.value}</ThemedText>
+                  <ThemedText>
+                    {item.value instanceof Date
+                      ? format(item.value, "MM/dd/yyyy")
+                      : item.value}
+                  </ThemedText>
                 </View>
               )
             }

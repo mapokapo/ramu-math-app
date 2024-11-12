@@ -11,6 +11,10 @@ export default function DeleteAccountLayout() {
         name="delete-account"
         options={{ title: "Delete Account" }}
       />
+      <Stack.Screen
+        name="edit-profile"
+        options={{ title: "Edit Profile" }}
+      />
     </Stack>
   );
 }

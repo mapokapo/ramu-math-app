@@ -19,7 +19,7 @@ export default function App() {
         style={{
           fontSize: 12,
           textAlign: "center",
-          color: theme.colors.textMuted,
+          color: theme.colors.mutedText,
         }}>
         The greeting above is using the user's Firebase auth data, not their
         custom Firestore profile data.

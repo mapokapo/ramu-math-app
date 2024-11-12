@@ -25,7 +25,9 @@ export default function ThemedButton(props: Props) {
       style={[
         commonStyles.button,
         {
-          backgroundColor: theme.colors.primary,
+          backgroundColor: props.disabled
+            ? theme.colors.muted
+            : theme.colors.primary,
           alignItems: "center",
         },
         props.style,

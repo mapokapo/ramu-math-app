@@ -4,7 +4,8 @@ export interface ThemeData {
     text: string;
     primary: string;
     primaryText: string;
-    textMuted: string;
+    muted: string;
+    mutedText: string;
     error: string;
     errorText: string;
   };
@@ -16,7 +17,8 @@ const lightTheme: ThemeData = {
     text: "#000000",
     primary: "#007bff",
     primaryText: "#ffffff",
-    textMuted: "#6c757d",
+    muted: "#ccc",
+    mutedText: "#333",
     error: "#dc3545",
     errorText: "#ffffff",
   },
@@ -28,7 +30,8 @@ const darkTheme: ThemeData = {
     text: "#ffffff",
     primary: "#007bff",
     primaryText: "#ffffff",
-    textMuted: "#6c757d",
+    muted: "#333",
+    mutedText: "#bbb",
     error: "#dc3545",
     errorText: "#ffffff",
   },

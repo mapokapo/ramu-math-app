@@ -1,4 +1,4 @@
-import firestore from "@react-native-firebase/firestore";
+import firestore, { Timestamp } from "@react-native-firebase/firestore";
 import React, {
   createContext,
   PropsWithChildren,
@@ -66,7 +66,11 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
 
         setProfile({
           loaded: true,
-          data: snapshot.data() as Profile,
+          data: {
+            name: snapshot.get("name"),
+            dateOfBirth: (snapshot.get("dateOfBirth") as Timestamp).toDate(),
+            email: snapshot.get("email"),
+          },
         });
       });
   }, [user]);

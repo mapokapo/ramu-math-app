@@ -1,29 +1,28 @@
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import ThemedButton from "./themed-button";
-import { useState } from "react";
 import { useTheme } from "../lib/hooks/theme";
 
 type Props = {
   title: string;
+  value: Date | null;
   onDateChange: (date: Date) => void;
   disabled: boolean;
 };
 
 export default function DatePickerButton({
   title,
+  value,
   disabled,
   onDateChange,
 }: Props) {
-  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
   const theme = useTheme();
 
   const handlePickDateOfBirth = () => {
     DateTimePickerAndroid.open({
-      value: dateOfBirth ?? new Date(),
+      value: value ?? new Date(),
       mode: "date",
       onChange: (event, selectedDate) => {
         if (event.type === "set" && selectedDate) {
-          setDateOfBirth(selectedDate);
           onDateChange(selectedDate);
         }
       },
@@ -32,7 +31,7 @@ export default function DatePickerButton({
   };
   return (
     <ThemedButton
-      title={dateOfBirth ? dateOfBirth.toLocaleDateString() : title}
+      title={value ? value.toLocaleDateString() : title}
       onPress={handlePickDateOfBirth}
       disabled={disabled}
       textStyle={{
