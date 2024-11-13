@@ -10,7 +10,6 @@ import ThemedView from "../../components/themed-view";
 import { useTheme } from "../../lib/hooks/theme";
 import { mapError } from "../../lib/util/map-error";
 import { toast } from "burnt";
-import storage from "@react-native-firebase/storage";
 import ImagePickerButton from "../../components/image-picker-button";
 
 export default function CreateProfile() {
@@ -46,16 +45,17 @@ export default function CreateProfile() {
 
     try {
       let photoURL: string | null = null;
-      if (imageUrl !== null) {
-        const fileExtension = imageUrl.split(".").pop();
-        if (fileExtension === undefined) {
-          return;
-        }
+      // TODO: firebase storage is no longer free, so we need to find a new way to store images
+      // if (imageUrl !== null) {
+      //   const fileExtension = imageUrl.split(".").pop();
+      //   if (fileExtension === undefined) {
+      //     return;
+      //   }
 
-        const path = `users/${user.uid}/profile.${fileExtension}`;
-        const task = await storage().ref(path).putFile(imageUrl);
-        photoURL = await task.ref.getDownloadURL();
-      }
+      //   const path = `users/${user.uid}/profile.${fileExtension}`;
+      //   const task = await storage().ref(path).putFile(imageUrl);
+      //   photoURL = await task.ref.getDownloadURL();
+      // }
 
       await firestore().collection("profiles").doc(user.uid).set({
         name,

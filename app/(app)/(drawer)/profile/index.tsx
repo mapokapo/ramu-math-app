@@ -11,7 +11,6 @@ import { useAppUser } from "../../../../lib/context/user-provider";
 import { useTheme } from "../../../../lib/hooks/theme";
 import { camelCaseToWords } from "../../../../lib/util/camel-case-to-words";
 import auth from "@react-native-firebase/auth";
-import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import * as Clipboard from "expo-clipboard";
 import { mapError } from "../../../../lib/util/map-error";
@@ -29,15 +28,13 @@ export default function Profile() {
       return;
     }
 
-    const path = `users/${user.uid}/profile.${fileExtension}`;
+    //const path = `users/${user.uid}/profile.${fileExtension}`;
     try {
-      const task = await storage().ref(path).putFile(uri);
-      await firestore()
-        .collection("profiles")
-        .doc(user.uid)
-        .update({
-          photoURL: await task.ref.getDownloadURL(),
-        });
+      // TODO: firebase storage is no longer free, so we need to find a new way to store images
+      // const task = await storage().ref(path).putFile(uri);
+      await firestore().collection("profiles").doc(user.uid).update({
+        photoURL: null,
+      });
     } catch (error) {
       console.error(error);
 
