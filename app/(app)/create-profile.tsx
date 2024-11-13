@@ -1,5 +1,5 @@
 import { commonStyles } from "../../lib/config/common-styles";
-import { Image, TextInput, TouchableOpacity, View } from "react-native";
+import { TextInput, View } from "react-native";
 import { useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 import { useAppUser } from "../../lib/context/user-provider";
@@ -11,7 +11,7 @@ import { useTheme } from "../../lib/hooks/theme";
 import { mapError } from "../../lib/util/map-error";
 import { toast } from "burnt";
 import storage from "@react-native-firebase/storage";
-import * as ImagePicker from "expo-image-picker";
+import ImagePickerButton from "../../components/image-picker-button";
 
 export default function CreateProfile() {
   const user = useAppUser();
@@ -26,30 +26,6 @@ export default function CreateProfile() {
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
   const theme = useTheme();
-
-  const handlePickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== "granted") {
-      toast({
-        title: "Permission to access media library was denied.",
-      });
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: false,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      const file = result.assets[0];
-      setImageUrl(file.uri);
-    }
-  };
 
   const handleCreateProfile = async () => {
     if (loading) {
@@ -102,16 +78,11 @@ export default function CreateProfile() {
 
   return (
     <ThemedView style={commonStyles.container}>
-      <TouchableOpacity onPress={handlePickImage}>
-        <Image
-          source={{ uri: imageUrl ?? undefined }}
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 50,
-          }}
-        />
-      </TouchableOpacity>
+      <ImagePickerButton
+        value={imageUrl}
+        onImagePicked={setImageUrl}
+        disabled={loading}
+      />
       <TextInput
         style={commonStyles.textInput}
         placeholder="Email"

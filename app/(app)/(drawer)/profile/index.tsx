@@ -14,8 +14,8 @@ import auth from "@react-native-firebase/auth";
 import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import * as Clipboard from "expo-clipboard";
-import * as ImagePicker from "expo-image-picker";
 import { mapError } from "../../../../lib/util/map-error";
+import ImagePickerButton from "../../../../components/image-picker-button";
 
 export default function Profile() {
   const user = useAppUser();
@@ -23,49 +23,29 @@ export default function Profile() {
   const theme = useTheme();
   const router = useRouter();
 
-  const handlePickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== "granted") {
-      toast({
-        title: "Permission to access media library was denied.",
-      });
+  const handlePickImage = async (uri: string) => {
+    const fileExtension = uri.split(".").pop();
+    if (fileExtension === undefined) {
       return;
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: false,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      const file = result.assets[0];
-      const fileExtension = file.uri.split(".").pop();
-      if (fileExtension === undefined) {
-        return;
-      }
-
-      const path = `users/${user.uid}/profile.${fileExtension}`;
-      try {
-        const task = await storage().ref(path).putFile(file.uri);
-        await firestore()
-          .collection("profiles")
-          .doc(user.uid)
-          .update({
-            photoURL: await task.ref.getDownloadURL(),
-          });
-      } catch (error) {
-        console.error(error);
-
-        const message = mapError(error);
-
-        toast({
-          title: message,
+    const path = `users/${user.uid}/profile.${fileExtension}`;
+    try {
+      const task = await storage().ref(path).putFile(uri);
+      await firestore()
+        .collection("profiles")
+        .doc(user.uid)
+        .update({
+          photoURL: await task.ref.getDownloadURL(),
         });
-      }
+    } catch (error) {
+      console.error(error);
+
+      const message = mapError(error);
+
+      toast({
+        title: message,
+      });
     }
   };
 
@@ -83,16 +63,10 @@ export default function Profile() {
               alignItems: "center",
             }}>
             {user.photoURL && (
-              <TouchableOpacity onPress={handlePickImage}>
-                <Image
-                  source={{ uri: user.photoURL }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 50,
-                  }}
-                />
-              </TouchableOpacity>
+              <ImagePickerButton
+                value={user.photoURL}
+                onImagePicked={handlePickImage}
+              />
             )}
             <ThemedText style={commonStyles.title}>
               {profile.data.name}
