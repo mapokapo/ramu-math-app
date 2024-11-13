@@ -1,7 +1,7 @@
 import { toast } from "burnt";
 import { format, formatRelative } from "date-fns";
 import { useRouter } from "expo-router";
-import { View, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, FlatList } from "react-native";
 import ThemedButton from "../../../../components/themed-button";
 import ThemedText from "../../../../components/themed-text";
 import ThemedView from "../../../../components/themed-view";
