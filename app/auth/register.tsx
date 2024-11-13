@@ -7,6 +7,7 @@ import ThemedButton from "../../components/themed-button";
 import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
 import { useTheme } from "../../lib/hooks/theme";
+import { toast } from "burnt";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -36,7 +37,9 @@ export default function Register() {
 
       const message = mapError(error);
 
-      setErrorMessage(message);
+      toast({
+        title: message,
+      });
     }
 
     setLoading(false);

@@ -10,6 +10,7 @@ import ThemedText from "../../../../components/themed-text";
 import ThemedView from "../../../../components/themed-view";
 import { commonStyles } from "../../../../lib/config/common-styles";
 import { useTheme } from "../../../../lib/hooks/theme";
+import { toast } from "burnt";
 
 export default function EditProfile() {
   const user = useAppUser();
@@ -52,7 +53,9 @@ export default function EditProfile() {
 
       const message = mapError(error);
 
-      setErrorMessage(message);
+      toast({
+        title: message,
+      });
     }
 
     setLoading(false);

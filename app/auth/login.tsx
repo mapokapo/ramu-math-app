@@ -8,6 +8,7 @@ import ThemedView from "../../components/themed-view";
 import ThemedText from "../../components/themed-text";
 import { useTheme } from "../../lib/hooks/theme";
 import { authProviders } from "../../lib/config/auth-providers";
+import { toast } from "burnt";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -48,7 +49,9 @@ export default function Login() {
 
       const message = mapError(error);
 
-      setErrorMessage(message);
+      toast({
+        title: message,
+      });
     }
   };
 
@@ -72,7 +75,9 @@ export default function Login() {
 
       const message = mapError(error);
 
-      setErrorMessage(message);
+      toast({
+        title: message,
+      });
     }
 
     setLoading(false);

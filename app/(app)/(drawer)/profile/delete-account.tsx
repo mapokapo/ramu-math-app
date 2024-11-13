@@ -10,6 +10,7 @@ import ThemedButton from "../../../../components/themed-button";
 import { useTheme } from "../../../../lib/hooks/theme";
 import { mapError } from "../../../../lib/util/map-error";
 import { authProviders } from "../../../../lib/config/auth-providers";
+import { toast } from "burnt";
 
 export default function DeleteAccount() {
   const [email, setEmail] = useState("");
@@ -53,7 +54,9 @@ export default function DeleteAccount() {
 
       const message = mapError(error);
 
-      setErrorMessage(message);
+      toast({
+        title: message,
+      });
     }
 
     setLoading(false);
@@ -84,7 +87,9 @@ export default function DeleteAccount() {
 
       const message = mapError(error);
 
-      setErrorMessage(message);
+      toast({
+        title: message,
+      });
     }
 
     setLoading(false);
