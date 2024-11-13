@@ -14,6 +14,7 @@ export type Profile = {
   name: string;
   dateOfBirth: Date;
   email: string;
+  photoURL?: string;
 };
 
 type ProfileProviderProps = PropsWithChildren & {

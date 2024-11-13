@@ -1,7 +1,7 @@
 import { toast } from "burnt";
 import { format, formatRelative } from "date-fns";
 import { useRouter } from "expo-router";
-import { View, FlatList, Image } from "react-native";
+import { View, FlatList, Image, TouchableOpacity } from "react-native";
 import ThemedButton from "../../../../components/themed-button";
 import ThemedText from "../../../../components/themed-text";
 import ThemedView from "../../../../components/themed-view";
@@ -11,13 +11,63 @@ import { useAppUser } from "../../../../lib/context/user-provider";
 import { useTheme } from "../../../../lib/hooks/theme";
 import { camelCaseToWords } from "../../../../lib/util/camel-case-to-words";
 import auth from "@react-native-firebase/auth";
+import storage from "@react-native-firebase/storage";
+import firestore from "@react-native-firebase/firestore";
 import * as Clipboard from "expo-clipboard";
+import * as ImagePicker from "expo-image-picker";
+import { mapError } from "../../../../lib/util/map-error";
 
 export default function Profile() {
   const user = useAppUser();
   const profile = useAppProfile();
   const theme = useTheme();
   const router = useRouter();
+
+  const handlePickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      toast({
+        title: "Permission to access media library was denied.",
+      });
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const file = result.assets[0];
+      const fileExtension = file.uri.split(".").pop();
+      if (fileExtension === undefined) {
+        return;
+      }
+
+      const path = `users/${user.uid}/profile.${fileExtension}`;
+      try {
+        const task = await storage().ref(path).putFile(file.uri);
+        await firestore()
+          .collection("profiles")
+          .doc(user.uid)
+          .update({
+            photoURL: await task.ref.getDownloadURL(),
+          });
+      } catch (error) {
+        console.error(error);
+
+        const message = mapError(error);
+
+        toast({
+          title: message,
+        });
+      }
+    }
+  };
 
   return (
     <ThemedView style={commonStyles.container}>
@@ -33,14 +83,16 @@ export default function Profile() {
               alignItems: "center",
             }}>
             {user.photoURL && (
-              <Image
-                source={{ uri: user.photoURL }}
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                }}
-              />
+              <TouchableOpacity onPress={handlePickImage}>
+                <Image
+                  source={{ uri: user.photoURL }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 50,
+                  }}
+                />
+              </TouchableOpacity>
             )}
             <ThemedText style={commonStyles.title}>
               {profile.data.name}
