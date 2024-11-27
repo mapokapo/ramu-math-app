@@ -1,13 +1,10 @@
 import { useEffect } from "react";
 import { useUser } from "../../lib/context/user-provider";
 import { Redirect, SplashScreen, Stack, usePathname } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   ProfileProvider,
   useProfile,
 } from "../../lib/context/profile-provider";
-import { View } from "react-native";
-import { commonStyles } from "../../lib/config/common-styles";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,22 +36,12 @@ function ProfileLoader() {
   const { profile } = useProfile();
   const pathname = usePathname();
 
-  if (!profile.loaded) {
-    return (
-      <View style={[commonStyles.container, commonStyles.centered]}>
-        <Ionicons
-          name="refresh"
-          size={32}
-          color="black"
-        />
-      </View>
-    );
-  }
-
-  if (profile.data === null && pathname !== "/create-profile") {
-    return <Redirect href="/create-profile" />;
-  } else if (profile.data !== null && pathname === "/create-profile") {
-    return <Redirect href="/" />;
+  if (profile.loaded) {
+    if (profile.data === null && pathname !== "/create-profile") {
+      return <Redirect href="/create-profile" />;
+    } else if (profile.data !== null && pathname === "/create-profile") {
+      return <Redirect href="/" />;
+    }
   }
 
   return (
