@@ -34,8 +34,14 @@ export const mapError = (error: unknown) => {
         return "The password is too weak.";
       case "auth/invalid-credential":
         return "Could not find an account with the provided credentials.";
+      case "firestore/permission-denied":
+        return "You do not have permission to perform this action.";
       default:
-        return error.nativeErrorMessage;
+        return (
+          error.nativeErrorMessage ??
+          error.message ??
+          "An unknown error occurred."
+        );
     }
   }
 
