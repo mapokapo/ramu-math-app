@@ -89,9 +89,9 @@ JDK-a, Android SDK-a, i poželjno Android Studio IDE-a i Android Emulatora.
 ### Authentication flow
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Login%20screen.jpg" alt="Login screen" width="144px">
-  <img src="./docs/images/Email%20and%20password%20register%20screen.jpg" alt="Register with email and password screen" width="144px">
-  <img src="./docs/images/Profile%20creation%20screen.jpg" alt="Create account screen" width="144px">
+  <img src="./docs/images/Login%20screen.jpg" alt="Login screen" width="250px">
+  <img src="./docs/images/Email%20and%20password%20register%20screen.jpg" alt="Register with email and password screen" width="250px">
+  <img src="./docs/images/Profile%20creation%20screen.jpg" alt="Create account screen" width="250px">
 </div>
 
 ### Main tabs layout
@@ -99,30 +99,30 @@ JDK-a, Android SDK-a, i poželjno Android Studio IDE-a i Android Emulatora.
 #### Games list
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Games%20list%20screen.jpg" alt="Games list screen" width="144px">
-  <img src="./docs/images/Create%20game%20modal%20screen.jpg" alt="Game creation screen" width="144px">
+  <img src="./docs/images/Games%20list%20screen.jpg" alt="Games list screen" width="250px">
+  <img src="./docs/images/Create%20game%20modal%20screen.jpg" alt="Game creation screen" width="250px">
 </div>
 
 #### Memory game
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Memory%20game%20screen.jpg" alt="Memory game screen" width="144px">
-  <img src="./docs/images/Memory%20game%20playing%20stage.jpg" alt="Memory game playing stage screen" width="144px">
-  <img src="./docs/images/Memory%20game%20guessing%20stage.jpg" alt="Memory game guessing stage screen" width="144px">
-  <img src="./docs/images/Memory%20game%20victory%20screen.jpg" alt="Memory game victory screen" width="144px">
-  <img src="./docs/images/Memory%20game%20loss%20screen.jpg" alt="Memory game loss screen" width="144px">
+  <img src="./docs/images/Memory%20game%20screen.jpg" alt="Memory game screen" width="250px">
+  <img src="./docs/images/Memory%20game%20playing%20stage.jpg" alt="Memory game playing stage screen" width="250px">
+  <img src="./docs/images/Memory%20game%20guessing%20stage.jpg" alt="Memory game guessing stage screen" width="250px">
+  <img src="./docs/images/Memory%20game%20victory%20screen.jpg" alt="Memory game victory screen" width="250px">
+  <img src="./docs/images/Memory%20game%20loss%20screen.jpg" alt="Memory game loss screen" width="250px">
 </div>
 
 #### Leaderboard
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Leaderboard%20screen.jpg" alt="Leaderboard screen" width="144px">
+  <img src="./docs/images/Leaderboard%20screen.jpg" alt="Leaderboard screen" width="250px">
 </div>
 
 ### Drawer layout
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Drawer.jpg" alt="Drawer" width="144px">
+  <img src="./docs/images/Drawer.jpg" alt="Drawer" width="250px">
 </div>
 
 ### Profile stack
@@ -130,21 +130,21 @@ JDK-a, Android SDK-a, i poželjno Android Studio IDE-a i Android Emulatora.
 #### Profile view
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Profile%20screen%20of%20user%20without%20profile%20picture.jpg" alt="Profile screen without profile picture" width="144px">
-  <img src="./docs/images/Profile%20screen%20of%20user%20with%20profile%20picture.jpg" alt="Profile screen with profile picture" width="144px">
+  <img src="./docs/images/Profile%20screen%20of%20user%20without%20profile%20picture.jpg" alt="Profile screen without profile picture" width="250px">
+  <img src="./docs/images/Profile%20screen%20of%20user%20with%20profile%20picture.jpg" alt="Profile screen with profile picture" width="250px">
 </div>
 
 #### Edit Profile
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <img src="./docs/images/Edit%20profile%20screen.jpg" alt="Edit profile screen" width="144px">
-  <img src="./docs/images/Edited%20profile%20of%20user%20with%20profile%20picture.jpg" alt="Edited profile of user with profile picture" width="144px">
+  <img src="./docs/images/Edit%20profile%20screen.jpg" alt="Edit profile screen" width="250px">
+  <img src="./docs/images/Edited%20profile%20of%20user%20with%20profile%20picture.jpg" alt="Edited profile of user with profile picture" width="250px">
 </div>
 
 #### Delete Profile/Account
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-	<img src="./docs/images/Account%20deletion%20screen%20for%20user%20who%20registered%20using%20email%20and%20password.jpg" alt="Delete account of user who registered using email and password" width="144px">
-	<img src="./docs/images/Account%20deletion%20screen%20with%20user%20who%20registered%20using%20a%20third%20party%20provider%20eg.%20Google.jpg" alt="Delete account of user who registered using a third party provider eg. Google" width="144px">
-	<img src="./docs/images/Account%20deletion%20credential%20confirmation%20failure.jpg" alt="Account deletion confirmation failure" width="144px">
+	<img src="./docs/images/Account%20deletion%20screen%20for%20user%20who%20registered%20using%20email%20and%20password.jpg" alt="Delete account of user who registered using email and password" width="250px">
+	<img src="./docs/images/Account%20deletion%20screen%20with%20user%20who%20registered%20using%20a%20third%20party%20provider%20eg.%20Google.jpg" alt="Delete account of user who registered using a third party provider eg. Google" width="250px">
+	<img src="./docs/images/Account%20deletion%20credential%20confirmation%20failure.jpg" alt="Account deletion confirmation failure" width="250px">
 </div>
