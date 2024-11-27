@@ -46,88 +46,92 @@ export default function Profile() {
     }
   };
 
+  if (!profile.loaded) {
+    return (
+      <ThemedView style={commonStyles.container}>
+        <ThemedText>Loading...</ThemedText>
+      </ThemedView>
+    );
+  }
+
   return (
     <ThemedView style={commonStyles.container}>
-      {!profile.loaded ? (
-        <ThemedText>Loading...</ThemedText>
-      ) : (
+      <View
+        style={{
+          gap: 8,
+        }}>
         <View
           style={{
-            gap: 8,
+            alignItems: "center",
           }}>
-          <View
-            style={{
-              alignItems: "center",
-            }}>
-            {user.photoURL && (
-              <ImagePickerButton
-                value={user.photoURL}
-                onImagePicked={handlePickImage}
-              />
-            )}
-            <ThemedText style={commonStyles.title}>
-              {profile.data.name}
-            </ThemedText>
-            <ThemedText>
-              {user.metadata.lastSignInTime &&
-                `Last seen ${formatRelative(
-                  new Date(user.metadata.lastSignInTime),
-                  new Date()
-                )}`}
-            </ThemedText>
-          </View>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <ThemedButton
-              title="Copy UID"
-              onPress={() => {
-                if (user.uid) {
-                  Clipboard.setStringAsync(user.uid).then(() => {
-                    toast({
-                      title: "UID copied to clipboard!",
-                    });
-                  });
-                }
-              }}
+          {user.photoURL && (
+            <ImagePickerButton
+              value={profile.data.photoURL ?? null}
+              onImagePicked={handlePickImage}
             />
-          </View>
-          <View style={commonStyles.horizontalRule}></View>
-          <FlatList
-            data={[
-              { key: "Email", value: profile.data.email },
-              { key: "Date of birth", value: profile.data.dateOfBirth },
-              { key: "Phone number", value: user.phoneNumber },
-            ]}
-            renderItem={({ item }) =>
-              item.value === null ? null : (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingVertical: 8,
-                  }}>
-                  <ThemedText>{camelCaseToWords(item.key)}</ThemedText>
-                  <ThemedText>
-                    {item.value instanceof Date
-                      ? format(item.value, "MM/dd/yyyy")
-                      : item.value}
-                  </ThemedText>
-                </View>
-              )
-            }
-          />
+          )}
+          <ThemedText style={commonStyles.title}>
+            {profile.data.name}
+          </ThemedText>
+          <ThemedText>
+            {user.metadata.lastSignInTime &&
+              `Last seen ${formatRelative(
+                new Date(user.metadata.lastSignInTime),
+                new Date()
+              )}`}
+          </ThemedText>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <ThemedButton
-            title="Log out"
-            onPress={() => auth().signOut()}
-          />
-          <ThemedButton
-            title="Delete account"
-            onPress={() => router.push("/profile/delete-account")}
-            style={{
-              backgroundColor: theme.colors.error,
+            title="Copy UID"
+            onPress={() => {
+              if (user.uid) {
+                Clipboard.setStringAsync(user.uid).then(() => {
+                  toast({
+                    title: "UID copied to clipboard!",
+                  });
+                });
+              }
             }}
           />
         </View>
-      )}
+        <View style={commonStyles.horizontalRule}></View>
+        <FlatList
+          data={[
+            { key: "Email", value: profile.data.email },
+            { key: "Date of birth", value: profile.data.dateOfBirth },
+            { key: "Phone number", value: user.phoneNumber },
+          ]}
+          renderItem={({ item }) =>
+            item.value === null ? null : (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingVertical: 8,
+                }}>
+                <ThemedText>{camelCaseToWords(item.key)}</ThemedText>
+                <ThemedText>
+                  {item.value instanceof Date
+                    ? format(item.value, "MM/dd/yyyy")
+                    : item.value}
+                </ThemedText>
+              </View>
+            )
+          }
+        />
+        <ThemedButton
+          title="Log out"
+          onPress={() => auth().signOut()}
+        />
+        <ThemedButton
+          title="Delete account"
+          onPress={() => router.push("/profile/delete-account")}
+          style={{
+            backgroundColor: theme.colors.error,
+          }}
+        />
+      </View>
     </ThemedView>
   );
 }
