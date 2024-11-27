@@ -19,7 +19,10 @@ export default function CreateProfile() {
   const [name, setName] = useState(user.displayName ?? "");
   const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(
-    user.photoURL ?? null
+    user.photoURL ??
+      (user.providerData.length > 0
+        ? (user.providerData[0].photoURL ?? null)
+        : null)
   );
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
@@ -44,8 +47,8 @@ export default function CreateProfile() {
     setErrorMessage(null);
 
     try {
-      let photoURL: string | null = null;
       // TODO: firebase storage is no longer free, so we need to find a new way to store images
+      // let photoURL: string | null = null;
       // if (imageUrl !== null) {
       //   const fileExtension = imageUrl.split(".").pop();
       //   if (fileExtension === undefined) {
@@ -61,7 +64,8 @@ export default function CreateProfile() {
         name,
         email,
         dateOfBirth,
-        photoURL,
+        photoURL: imageUrl,
+        points: 0,
       });
     } catch (error) {
       console.error(error);
@@ -82,6 +86,9 @@ export default function CreateProfile() {
         value={imageUrl}
         onImagePicked={setImageUrl}
         disabled={loading}
+        style={{
+          marginHorizontal: "auto",
+        }}
       />
       <TextInput
         style={commonStyles.textInput}

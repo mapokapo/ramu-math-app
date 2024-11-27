@@ -13,10 +13,12 @@ import { mapError } from "../util/map-error";
 import { toast } from "burnt";
 
 export type Profile = {
+  uid: string;
   name: string;
   dateOfBirth: Date;
   email: string;
   photoURL?: string;
+  points: number;
 };
 
 type ProfileProviderProps = PropsWithChildren & {
@@ -71,9 +73,12 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
           setProfile({
             loaded: true,
             data: {
+              uid: snapshot.id,
               name: snapshot.get("name"),
               dateOfBirth: (snapshot.get("dateOfBirth") as Timestamp).toDate(),
               email: snapshot.get("email"),
+              photoURL: snapshot.get<string | null>("photoURL") ?? undefined,
+              points: snapshot.get("points"),
             },
           });
         },
