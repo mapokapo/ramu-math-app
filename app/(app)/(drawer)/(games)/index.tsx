@@ -93,6 +93,12 @@ export default function App() {
     setModalVisible(false);
   };
 
+  const handleDeleteGame = async (id: string) => {
+    await firestore().collection("games").doc(id).delete();
+
+    setGames(games.filter(game => game.id !== id));
+  };
+
   return (
     <ThemedView style={commonStyles.container}>
       <Modal
@@ -172,7 +178,7 @@ export default function App() {
                 {item.description}
               </ThemedText>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDeleteGame(item.id)}>
               <Ionicons
                 name="trash"
                 size={24}
