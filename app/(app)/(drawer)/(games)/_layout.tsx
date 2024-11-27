@@ -32,6 +32,19 @@ export default function GamesLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="leaderboard"
+        options={{
+          title: "Leaderboard",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="trophy"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
