@@ -9,6 +9,8 @@ import React, {
 } from "react";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import AsyncValue from "../types/AsyncValue";
+import { mapError } from "../util/map-error";
+import { toast } from "burnt";
 
 export type Profile = {
   name: string;
@@ -56,24 +58,41 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     return firestore()
       .collection("profiles")
       .doc(user.uid)
-      .onSnapshot(snapshot => {
-        if (!snapshot.exists) {
+      .onSnapshot(
+        snapshot => {
+          if (!snapshot.exists) {
+            setProfile({
+              loaded: true,
+              data: null,
+            });
+            return;
+          }
+
+          setProfile({
+            loaded: true,
+            data: {
+              name: snapshot.get("name"),
+              dateOfBirth: (snapshot.get("dateOfBirth") as Timestamp).toDate(),
+              email: snapshot.get("email"),
+            },
+          });
+        },
+        e => {
+          const message = mapError(e);
+
+          toast({
+            title: "Error",
+            message,
+          });
+
+          console.error(e);
+
           setProfile({
             loaded: true,
             data: null,
           });
-          return;
         }
-
-        setProfile({
-          loaded: true,
-          data: {
-            name: snapshot.get("name"),
-            dateOfBirth: (snapshot.get("dateOfBirth") as Timestamp).toDate(),
-            email: snapshot.get("email"),
-          },
-        });
-      });
+      );
   }, [user]);
 
   const value = useMemo(() => ({ profile, setProfile }), [profile, setProfile]);
