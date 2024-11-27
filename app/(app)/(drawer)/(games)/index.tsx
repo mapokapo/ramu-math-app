@@ -6,15 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import ThemedButton from "../../../components/themed-button";
-import ThemedView from "../../../components/themed-view";
-import { commonStyles } from "../../../lib/config/common-styles";
+import ThemedButton from "../../../../components/themed-button";
+import ThemedView from "../../../../components/themed-view";
+import { commonStyles } from "../../../../lib/config/common-styles";
 import firestore from "@react-native-firebase/firestore";
 import { useEffect, useState } from "react";
-import ImagePickerButton from "../../../components/image-picker-button";
-import { useTheme } from "../../../lib/hooks/theme";
-import ThemedText from "../../../components/themed-text";
+import ImagePickerButton from "../../../../components/image-picker-button";
+import { useTheme } from "../../../../lib/hooks/theme";
+import ThemedText from "../../../../components/themed-text";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { mapError } from "../../../../lib/util/map-error";
+import { toast } from "burnt";
 
 interface Game {
   id: string;
@@ -35,20 +37,34 @@ export default function App() {
   useEffect(() => {
     return firestore()
       .collection("games")
-      .onSnapshot(snapshot => {
-        const games: Game[] = [];
+      .onSnapshot(
+        snapshot => {
+          const games: Game[] = [];
 
-        snapshot.forEach(doc => {
-          games.push({
-            id: doc.id,
-            title: doc.data().title,
-            description: doc.data().description,
-            photoURL: doc.data().photoURL,
+          snapshot.forEach(doc => {
+            games.push({
+              id: doc.id,
+              title: doc.data().title,
+              description: doc.data().description,
+              photoURL: doc.data().photoURL,
+            });
           });
-        });
 
-        setGames(games);
-      });
+          setGames(games);
+        },
+        e => {
+          const message = mapError(e);
+
+          toast({
+            title: "Error",
+            message,
+          });
+
+          console.error(e);
+
+          setGames([]);
+        }
+      );
   }, []);
 
   const handleAddGame = async () => {

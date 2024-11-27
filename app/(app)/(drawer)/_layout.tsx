@@ -10,7 +10,7 @@ export default function TabsLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer initialRouteName="index">
         <Drawer.Screen
-          name="index"
+          name="(games)"
           options={{
             title: "Games",
           }}
