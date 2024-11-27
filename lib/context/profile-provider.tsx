@@ -81,8 +81,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
           const message = mapError(e);
 
           toast({
-            title: "Error",
-            message,
+            title: message,
           });
 
           console.error(e);

@@ -56,8 +56,7 @@ export default function App() {
           const message = mapError(e);
 
           toast({
-            title: "Error",
-            message,
+            title: message,
           });
 
           console.error(e);
